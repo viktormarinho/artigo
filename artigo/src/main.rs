@@ -4,6 +4,6 @@ use serde_json::json;
 
 
 fn main() {
-    let res = render("Hello Viktor, my name is {{ name |> upper }}. Your name is {{ doido }}.".to_string(), json!({ "name": "Yo", "doido": "zimbas" }));
+    let res = render("Olá, meu nome é {{ nome |> upper }}.".to_string(), json!({ "nome": "cabral" }));
     println!("{res}");
 }

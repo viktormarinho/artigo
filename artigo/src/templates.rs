@@ -1,13 +1,16 @@
 use crate::util::StringUtils;
+
 #[derive(Debug)]
 enum Filter {
     Uppercase,
+    Lowercase,
 }
 
 impl Filter {
     pub fn apply_on(&self, target: String) -> String {
         match self {
-            Self::Uppercase => target.to_uppercase()
+            Self::Uppercase => target.to_uppercase(),
+            Self::Lowercase => target.to_lowercase(),
         }
     }
 }
@@ -144,6 +147,7 @@ fn chunk_to_tokens(chunk: &String) -> Vec<Token> {
             "for" => Token::For,
             "endfor" => Token::Endfor,
             "upper" => Token::Filter(Filter::Uppercase),
+            "lower" => Token::Filter(Filter::Lowercase),
             _ => Token::Variable(word.to_string()),
         });
     }
