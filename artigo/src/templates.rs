@@ -177,13 +177,8 @@ fn build_code_node(chunk: &mut String) -> TemplateTreeNode {
 fn parse_tree(content: String) -> TemplateTree {
     let chunks = content.split_in_chunks_inclusive("{", "}");
     let mut nodes = Vec::new();
-    for (i, chunk) in chunks.into_iter().enumerate() {
-        let is_code = i % 2 == 1;
-        if is_code {
-            nodes.push(build_code_node(&mut chunk.to_string()))
-        } else {
-            nodes.push(TemplateTreeNode::Literal(chunk.to_string()))
-        }
+    for chunk in chunks {
+        nodes.push(build_code_node(&mut chunk.to_string()))
     }
 
     return TemplateTree { nodes };
@@ -215,7 +210,7 @@ pub fn render_file(path: &str, context: serde_json::Value) -> String {
 mod tests {
     use serde_json::json;
 
-    use super::render;
+    use super::{render, render_file};
 
     #[test]
     fn it_works() {
@@ -233,5 +228,34 @@ mod tests {
             json!({ "name": "Viktor", "friendName": "John Doe" }),
         );
         assert_eq!(result, "Hello, John Doe. I am Viktor".to_string());
+    }
+
+    #[test]
+    fn vars_in_sequence_work() {
+        let result = render(
+            "{{ cumpriment }}{{ middle }}{{ name |> lower }}".to_string(),
+            json!({ "name": "VIKTOR", "cumpriment": "Hi", "middle": ", i am " }),
+        );
+        assert_eq!(result, "Hi, i am viktor".to_string());
+    }
+
+    #[test]
+    fn filters_work() {
+        let result = render(
+            "{{ cumpriment }}, my name is {{ name |> upper }}.".to_string(),
+            json!({ "name": "Viktor", "cumpriment": "Hello" }),
+        );
+        assert_eq!(result, "Hello, my name is VIKTOR.".to_string());
+    }
+
+    #[test]
+    fn works_with_files() {
+        let content = "<html> <h1>{{ name }}</h1> </html>".to_string();
+        std::fs::write("test.html.monkey", content).unwrap();
+
+        let result = render_file("test.html.monkey", json!({ "name": "Viktor" }));
+        std::fs::remove_file("test.html.monkey").unwrap();
+
+        assert_eq!(result, "<html> <h1>Viktor</h1> </html>".to_string());
     }
 }

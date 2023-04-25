@@ -20,7 +20,7 @@ impl StringUtils for String {
         let mut slices: Vec<String> = Vec::new();
 
         for (idx, chunk) in self.split(start).filter(|s| s.len() > 0).enumerate() {
-            if idx == 0 {
+            if idx == 0 && !self.starts_with(start) {
                 slices.push(chunk.to_string());
                 continue;
             }
@@ -32,7 +32,7 @@ impl StringUtils for String {
 
             let is_closed = rest.len() > 1;
 
-            if !is_closed {
+            if !is_closed && !chunk.ends_with(end) {
                 eprintln!("Missing a closing character {}", end);
                 std::process::abort();
             }
