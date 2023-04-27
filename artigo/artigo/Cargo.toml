@@ -1,5 +1,5 @@
 [package]
-name = "artigo-templates"
+name = "artigo"
 version = "0.1.0"
 edition = "2021"
 description = "Artigo is a open-source blog engine"
