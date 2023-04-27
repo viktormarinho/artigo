@@ -1,4 +1,4 @@
-use artigo::templates::render;
+use artigo_templates::templates::render;
 use serde_json::json;
 
 
