@@ -1,11 +1,7 @@
-[package]
-name = "artigo"
-version = "0.1.0"
-edition = "2021"
-description = "Artigo is a open-source blog engine"
-license = "MIT"
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[workspace]
 
-[dependencies]
-serde = "1.0.160"
-serde_json = "1.0.96"
+members = [
+  "artigo-templates",
+  "artigo-search",
+  "artigo",
+]
