@@ -1,27 +1,35 @@
 
-
 struct Document {
-    id: usize,
     path: String
 }
 
-struct DocumentReference;
+struct DocumentReference {
+    document: Document,
+    ocurrences: usize,
+}
 
 struct IndexTerm {
     term: String,
     refs: Vec<DocumentReference>,
 }
 
+pub struct QueryResult;
+
+pub enum IngestionType {
+    FileSystem(String),
+}
+
 pub struct SearchGraph {
     indexes: Vec<IndexTerm>,
+    ingestion_type: IngestionType
 }
 
 impl SearchGraph {
-    pub fn from_dir(dir: String) -> Self {
+    pub fn new(ingestion_type: IngestionType) -> Self {
         todo!();
     }
 
-    pub fn text_query(text: String) {
-
+    pub fn text_query(text: String) -> QueryResult {
+        todo!();
     }
 }
